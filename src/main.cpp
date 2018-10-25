@@ -236,7 +236,7 @@ int main()
 
 		printf("\nCapacity=%ld, Size=%ld\n", intVec.capacity(), intVec.size());
 
-		DO(intVec[3] *= 2;)
+		DO(intVec[3] *= 2);
 		//printf("%d\n ", intVec[3]);
  		for (size_t i = 0; i < intVec.size(); ++i)
  		{
@@ -245,14 +245,13 @@ int main()
  		printf("\n");
 
 		printf("\nDestroy vector\n\n");
-	}/*
+	}
 
 
 	{
 		printf("\n=======Vector of Foo================\n\nCreate vector\n");
 
 		Vector<Foo, SpyAllocator<Foo> > fooVec;
-
 		printf("\nsizeof(fooVec) : %ld\n", sizeof(fooVec));
 
 		DO(fooVec.reserve(2));
@@ -261,7 +260,7 @@ int main()
 		DO(fooVec.push_back(Foo()));
 
 		printf("\nDestroy vector\n\n");
-	}
+	}/*
 
 	{
 		printf("\n=======Vector of Foo================\n\nCreate vector\n");
