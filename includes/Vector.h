@@ -8,8 +8,8 @@ class Vector
 {
 private:
 	T* m_data;
-	unsigned long int m_size;
-	unsigned long int m_capacity;
+	size_t m_size;
+	size_t m_capacity;
 public:
 	Vector()
 	{
@@ -30,9 +30,13 @@ public:
 
 	Vector(const Vector& other)
 	{
-		m_data = other.m_data;
 		m_size = other.m_size;
-		m_capacity = other.m_capacity;
+		m_capacity = 0;
+		reserve(other.m_size);
+		for (size_t i = 0; i < m_capacity; i++)
+		{
+			Allocator().construct(m_data + i, other.m_data[i]);
+		}
 	}
 
 	size_t capacity()
@@ -97,16 +101,25 @@ public:
 		m_size = 0;
 	}
 
-	void resize(size_t n)
+	void resize(size_t n, T* c_data = nullptr)
 	{
 		if (n == m_size)
 			return;
 
+
 		if (n > m_size)
 		{
 			reserve(n);
-			for (size_t i = m_size; i < n; i++)
-				Allocator().construct(m_data + i);
+			if (c_data == nullptr)
+			{
+				for (size_t i = m_size; i < n; i++)
+					Allocator().construct(m_data + i);
+			}
+			else
+			{
+				for (size_t i = m_size; i < n; i++)
+                                        Allocator().construct(m_data + i, c_data[i]);
+			}
 		}
 		else
 		{
@@ -119,6 +132,13 @@ public:
 	T& operator[](long int i)
 	{
 		return this->m_data[i];
+	}
+
+	Vector& operator=(const Vector& other)
+	{
+		clear();
+		resize(other.m_size, other.m_data);
+		return *this;
 	}
 };
 
