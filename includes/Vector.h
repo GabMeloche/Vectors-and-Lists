@@ -58,7 +58,6 @@ public:
 			m_capacity *= 2;
 			T* new_data; 
 			Allocator().construct(&new_data, m_data);
-			//Allocator().construct(new_data + m_size, newElement);
 			new_data = Allocator().allocate(m_capacity);
 			Allocator().construct(new_data + m_size, newElement);
 
@@ -67,8 +66,6 @@ public:
 				Allocator().construct(new_data + i, m_data[i]);
 			}
 			
-			//Allocator().construct(m_data + m_size, newElement);
-
 			for (size_t i = 0; i < m_size; i++)
 			{
 				Allocator().destroy(m_data + i);
@@ -82,13 +79,41 @@ public:
 		++m_size;
 	}
 
-	void reserve(unsigned long int n)
-	{//max_size to do
+	void reserve(size_t n)
+	{
 		if (n > m_capacity)
 		{
 			m_capacity = n;		
 			m_data = Allocator().allocate(n);
 		}
+	}
+
+	void clear()
+	{
+		for (size_t i = 0; i < m_size; i++)
+		{
+			Allocator().destroy(m_data + i);
+		}
+		m_size = 0;
+	}
+
+	void resize(size_t n)
+	{
+		if (n == m_size)
+			return;
+
+		if (n > m_size)
+		{
+			reserve(n);
+			for (size_t i = m_size; i < n; i++)
+				Allocator().construct(m_data + i);
+		}
+		else
+		{
+			for (size_t i = n; i < m_size; i++)
+				Allocator().destroy(m_data + i);
+		}
+		m_size = n;
 	}
 
 	T& operator[](long int i)

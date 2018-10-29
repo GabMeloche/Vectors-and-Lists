@@ -260,7 +260,7 @@ int main()
 
 		printf("\nDestroy vector\n\n");
 	}
-/*
+
 	{
 		printf("\n=======Vector of Foo================\n\nCreate vector\n");
 
@@ -291,7 +291,7 @@ int main()
 		printf("\nDestroy vector\n\n");
 	}
 
-	{
+	/*{
 		printf("\n=======Vector of Foo================\n\nCreate vector\n");
 
 		Vector<Foo, SpyAllocator<Foo> > fooVec;
