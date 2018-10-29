@@ -20,13 +20,19 @@ public:
 
 	~Vector()
 	{
-		if (m_capacity > 0)
+		for (size_t i = 0; i < m_size; i++)
+		{
+			Allocator().destroy(m_data + i);
+		}
+		if (m_capacity != 0)
 			Allocator().deallocate(m_data, m_capacity);
-
-		delete m_data;
 	}
+
 	Vector(const Vector& other)
 	{
+		m_data = other.m_data;
+		m_size = other.m_size;
+		m_capacity = other.m_capacity;
 	}
 
 	size_t capacity()
@@ -40,42 +46,48 @@ public:
 
 	void push_back(const T& newElement)
 	{
-		T* new_data = m_data;
-
 		if (m_capacity == 0)
 		{
 			++m_capacity;
 			m_data = Allocator().allocate(m_capacity);
-			m_data[0] = newElement;
+			Allocator().construct(m_data, newElement);
+		}
+		else if (m_capacity == m_size)
+		{
+			size_t oldCapacity = m_capacity;
+			m_capacity *= 2;
+			T* new_data; 
+			Allocator().construct(&new_data, m_data);
+			//Allocator().construct(new_data + m_size, newElement);
+			new_data = Allocator().allocate(m_capacity);
+			Allocator().construct(new_data + m_size, newElement);
+
+			for (size_t i = 0; i < m_size; i++)
+			{
+				Allocator().construct(new_data + i, m_data[i]);
+			}
+			
+			//Allocator().construct(m_data + m_size, newElement);
+
+			for (size_t i = 0; i < m_size; i++)
+			{
+				Allocator().destroy(m_data + i);
+			}
+			Allocator().deallocate(m_data, oldCapacity);
+			m_data = new_data;
 		}
 		else
-		{
-			if (m_size % 2 != 1 || m_size == 1)
-			{
-				m_capacity *= 2;
-				m_data = Allocator().allocate(m_capacity);
-				
-				for (unsigned int i = 0; i < m_size; i++)
-					m_data[i] = new_data[i];
-				
-				m_data[m_size] = newElement;
-				Allocator().deallocate(new_data, size());
-			}
-			else
-			{
-				m_data[m_size] = newElement;
-			}
-		}
+			Allocator().construct(m_data + m_size, newElement);
+		
 		++m_size;
 	}
 
 	void reserve(unsigned long int n)
-	{
+	{//max_size to do
 		if (n > m_capacity)
 		{
-			if (n % 2 == 1)
+			m_capacity = n;		
 			m_data = Allocator().allocate(n);
-			//m_capacity += n;
 		}
 	}
 
