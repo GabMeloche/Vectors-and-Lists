@@ -32,11 +32,9 @@ public:
 	{
 		m_size = other.m_size;
 		m_capacity = 0;
-		reserve(other.m_size);
+		reserve(other.m_capacity);
 		for (size_t i = 0; i < m_capacity; i++)
-		{
 			Allocator().construct(m_data + i, other.m_data[i]);
-		}
 	}
 
 	size_t capacity()
@@ -105,7 +103,6 @@ public:
 	{
 		if (n == m_size)
 			return;
-
 
 		if (n > m_size)
 		{
