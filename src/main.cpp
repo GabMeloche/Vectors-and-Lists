@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <algorithm>
 #include <Vector.h>
+#include <List.h>
 #define USE_MOVE 	0
 //#define Vector		std::vector
 //#define List 		std::list
@@ -233,7 +234,6 @@ int main()
 		DO(intVec.push_back(30);)
 		DO(intVec.push_back(40);)
 		DO(intVec.push_back(50);)
-
 		printf("\nCapacity=%ld, Size=%ld\n", intVec.capacity(), intVec.size());
 		DO(intVec[3] *= 2);
 		//printf("%d\n ", intVec[3]);
@@ -324,7 +324,7 @@ int main()
 	}
 
 
-	/*{
+	{
 		printf("\n=======List================\n\nCreate list\n");
 
 		List<int, SpyAllocator<int>> list;
@@ -336,16 +336,16 @@ int main()
 		DO(list.push_back(50));
 
 		printf("\nList size : %ld\n", list.size());
-
+	}/*
 
 		printf("\nPrint list:\n");
-		for (List<int, SpyAllocator<int>>::iterator it = list.begin(); it != list.end(); ++it)
+					    		for (List<int, SpyAllocator<int>>::iterator it = list.begin(); it != list.end(); ++it)
 		{
 			printf("%d ", *it);
 		}
 		printf("\n\n");
 
-
+	}
 		DO(list.remove(20));
 		DO(list.remove(40));
 
